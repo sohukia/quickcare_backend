@@ -1,6 +1,4 @@
-# Quickare API Test
-
-This project is a TypeScript-based Fastify API boilerplate.
+# Quickare API
 
 ## Features
 
