@@ -1,9 +1,8 @@
 import Fastify from "fastify";
 import cors from "@fastify/cors";
-import dotenv from "dotenv";
-import hospitalsRoutes from "./routes/hospitals.js";
+import {hospitalsRoutes} from "./hospitals";
+import "./common/config"
 
-dotenv.config();
 
 const fastify = Fastify({ logger: true });
 
