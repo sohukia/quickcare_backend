@@ -1,4 +1,4 @@
-import { Hospital } from "./hospitals.model";
+import { Hospital, HospitalsData, Position } from "./hospitals.model";
 
 function computeHospitalScore(
     waitingTime: number,
@@ -39,6 +39,57 @@ export function filterHospitalsByEmergency(hospitals: Hospital[], emergencyType:
     return hospitals.filter(hospital =>
         hospital.specialties.map(s => s.toLowerCase()).includes(emergencyType)
     );
+}
+
+export async function listHostpitals(): Promise<HospitalsData> {
+    const data = await fetch(String(process.env.PREDICTIF_EMERGENCY_DEPTS));
+    const json = await data.json();
+    let hospitals: HospitalsData = {
+        hospitals: [],
+    };
+
+    for (let hp of json.objects) {
+        let pos: Position = {
+            latitude: hp.latitude,
+            longitude: hp.longitude
+        };
+
+        let hospital: Hospital = {
+            id: hp.id,
+            name: hp.name,
+            position: pos,
+            address: hp.address,
+            specialties: [hp.speciality],
+            public: Boolean(hp.type),
+            currentWaitTime: 0,
+            nextWaitTime: 0,
+            travelTime: 0,
+        };
+
+        hospitals.hospitals.push(hospital);
+    }
+    return hospitals;
+}
+
+export async function getHostpitalsTime(hpList: HospitalsData, hpIds: Array<number>): Promise<HospitalsData> {
+    let ids = [];
+    for (let i of hpIds) {
+        let hp = hpList.hospitals[i];
+        ids.push(hp.id);
+    }
+
+    let f = await fetch(String(process.env.PREDICTIF_EMERGENCY_INFLUXES) + ids.toString());
+    let data = await f.json();
+
+    for (let i = 0; i < ids.length; i++) {
+        let index = hpIds[i];
+        let fetchedData = data.objects[i];
+
+        hpList.hospitals[index].currentWaitTime = fetchedData.estimated[2];
+        hpList.hospitals[index].nextWaitTime = fetchedData.estimated[3];
+    }
+
+    return hpList;
 }
 
 // ...existing code or add service logic here...

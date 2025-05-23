@@ -12,6 +12,7 @@ export interface Hospital {
   specialties: string[];
   public: boolean;
   currentWaitTime: number;
+  nextWaitTime: number;
   travelTime: number;
 }
 
