@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "npx tsx src/index.ts",
+    "dev": "npx tsx watch src/index.ts",
     "build": "tsc",
     "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",

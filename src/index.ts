@@ -1,21 +1,42 @@
-import Fastify from "fastify";
+import Fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
-import {hospitalsRoutes} from "./hospitals";
-import "./common/config"
+import { hospitalsRoutes } from "./hospitals";
+import "./common/config";
 
+/**
+ * Create and configure the Fastify server instance.
+ */
+function buildServer(): FastifyInstance {
+  const server = Fastify({ logger: true });
+  return server;
+}
 
-const fastify = Fastify({ logger: true });
+/**
+ * Register plugins and routes.
+ */
+async function registerPluginsAndRoutes(server: FastifyInstance) {
+  await server.register(cors);
+  server.register(hospitalsRoutes, { prefix: "/api/hospitals" });
+}
 
-await fastify.register(cors);
+/**
+ * Start the Fastify server.
+ */
+async function startServer() {
+  const server = buildServer();
+  await registerPluginsAndRoutes(server);
 
-fastify.register(hospitalsRoutes, { prefix: "/api/hospitals" });
+  const PORT = process.env.PORT ? Number(process.env.PORT) : 5000;
+  const HOST = "0.0.0.0";
 
-const PORT = process.env.PORT ? Number(process.env.PORT) : 5000;
-
-fastify.listen({ port: PORT, host: "0.0.0.0" }, (err, address) => {
-  if (err) {
-    fastify.log.error(err);
+  try {
+    await server.listen({ port: PORT, host: HOST });
+    server.log.info(`Server listening at http://${HOST}:${PORT}`);
+  } catch (err) {
+    server.log.error(err);
     process.exit(1);
   }
-  fastify.log.info(`Server listening at ${address}`);
-});
+}
+
+// Entry point
+startServer();
