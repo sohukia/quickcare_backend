@@ -2,7 +2,7 @@ import { FastifyRequest, FastifyReply } from "fastify";
 import { sortHospitalsByScore, paginateHospitals, filterHospitalsByEmergency, sortHospitalsByDistance } from "./hospitals.utils";
 import fetchHospitalsData from "../fetching/fetching.PE";
 import { LatLng } from "../fetching/fetching.ORS.model";
-import { Hospital, Profile } from "./hospitals.model";
+import { Profile } from "./hospitals.model";
 
 interface HospitalsQuery {
     page?: string;
