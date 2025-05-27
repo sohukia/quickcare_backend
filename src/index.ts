@@ -1,7 +1,7 @@
 import Fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
 import { hospitalsRoutes } from "./hospitals";
-import "./common/config";
+import "./config";
 
 /**
  * Create and configure the Fastify server instance.
