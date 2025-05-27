@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { sortHospitalsByScore, paginateHospitals, filterHospitalsByEmergency, sortHospitalsByDistance } from "./hospitals.utils";
+import { sortHospitalsByScore, paginateHospitals, sortHospitalsByDistance } from "./hospitals.utils";
 import fetchHospitalsData from "../fetching/fetching.PE";
 import { LatLng } from "../fetching/fetching.ORS.model";
-import { Profile } from "./hospitals.model";
+import { Profile, SPECIALTY_MAP } from "./hospitals.model";
 
 interface HospitalsQuery {
     page?: string;
@@ -55,21 +55,38 @@ function handleError(reply: FastifyReply, error: unknown, message = "Internal se
 }
 
 /**
+ * Filters hospitals by mapped specialty param.
+ * specialtyParam: 'adulte' | 'enfant' | 'ophtalmologie' | 'autre'
+ */
+function filterHospitalsBySpecialty(hospitals: any[], specialtyParam?: string): any[] {
+    if (!specialtyParam || specialtyParam === "autre") {
+        return hospitals;
+    }
+    const specialtyString = SPECIALTY_MAP[specialtyParam];
+    if (!specialtyString) return hospitals;
+    return hospitals.filter((hospital: any) => hospital.specialty === specialtyString);
+}
+
+/**
  * Handler for GET /api/hospitals
  */
-export async function getHospitalsHandler(
-    request: FastifyRequest<{ Querystring: HospitalsQuery; Params: { profile?: Profile; latitude?: string; longitude?: string } }>,
+export default async function getHospitalsHandler(
+    request: FastifyRequest<{ Querystring: HospitalsQuery & { specialty?: string; transportMode?: string; latitude?: string; longitude?: string } }>,
     reply: FastifyReply
 ) {
     try {
-        const profile = parseProfile(request.params.profile);
-        const userPosition = parsePosition(request.params.latitude, request.params.longitude);
+        const profile = parseProfile((request.query as any).transportMode);
+        const userPosition = parsePosition((request.query as any).latitude, (request.query as any).longitude);
         const hospitalsData = await fetchHospitalsData(userPosition, profile);
         if (!hospitalsData) {
             return reply.status(500).send({ error: "Failed to fetch hospitals data" });
         }
         const { page, limit } = getPagination(request.query, hospitalsData.hospitals.length);
         let hospitals = hospitalsData.hospitals;
+        // Filter by mapped specialty param if provided
+        if ((request.query as any).specialty) {
+            hospitals = filterHospitalsBySpecialty(hospitals, (request.query as any).specialty);
+        }
         if (userPosition.latitude !== 0 || userPosition.longitude !== 0) {
             hospitals = sortHospitalsByDistance(hospitals, userPosition);
         }
@@ -83,36 +100,3 @@ export async function getHospitalsHandler(
         handleError(reply, error, "Failed to process hospitals request");
     }
 }
-
-/**
- * Handler for GET /api/hospitals/:emergency
- */
-export async function getHospitalsByEmergencyHandler(
-    request: FastifyRequest<{ Params: EmergencyParams & { profile?: Profile; latitude?: string; longitude?: string }; Querystring: HospitalsQuery }>,
-    reply: FastifyReply
-) {
-    try {
-        const { emergency, profile: profileParam, latitude, longitude } = request.params;
-        const profile = parseProfile(profileParam);
-        const userPosition = parsePosition(latitude, longitude);
-        const hospitalsData = await fetchHospitalsData(userPosition, profile);
-        if (!hospitalsData) {
-            return reply.status(500).send({ error: "Failed to fetch hospitals data" });
-        }
-        const { page, limit } = getPagination(request.query, hospitalsData.hospitals.length);
-        let hospitals = filterHospitalsByEmergency(hospitalsData.hospitals, emergency.toLowerCase());
-        if (userPosition.latitude !== 0 || userPosition.longitude !== 0) {
-            hospitals = sortHospitalsByDistance(hospitals, userPosition);
-        }
-        if (hospitals.length > 50) {
-            hospitals = hospitals.slice(0, 50);
-        }
-        const scoredHospitals = sortHospitalsByScore(hospitals);
-        const { paginated, total } = paginateHospitals(scoredHospitals, page, limit);
-        reply.send({ hospitals: paginated, page, limit, total });
-    } catch (error) {
-        handleError(reply, error, "Failed to process hospitals by emergency request");
-    }
-}
-
-export default {}

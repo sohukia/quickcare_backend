@@ -1,7 +1,7 @@
 // Utility functions for hospitals module
 // src/hospitals/hospitals.utils.ts
 
-import { Hospital, HospitalsData, Position } from "./hospitals.model";
+import { Hospital } from "./hospitals.model";
 
 /**
  * Computes the Haversine distance (in meters) between two positions.
@@ -77,16 +77,6 @@ export function paginateHospitals<T>(hospitals: T[], page: number, limit: number
     };
 }
 
-/**
- * Filters hospitals by emergency type (specialty).
- */
-export function filterHospitalsByEmergency(hospitals: Hospital[], emergencyType: string): Hospital[] {
-    if (emergencyType === 'general') {
-        return hospitals;
-    }
-    return hospitals.filter(hospital =>
-        hospital.specialty.toString().toLowerCase() === emergencyType.toLowerCase()
-    );
-}
+// filterHospitalsByEmergency has been removed in favor of filterHospitalsBySpecialty in the controller. All filtering by emergency/specialty is now handled in the controller only.
 
 export default {}
