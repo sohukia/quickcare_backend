@@ -15,7 +15,7 @@ export interface Hospital {
   name: string;
   position: Position;
   address: string;
-  specialty: Speciality;
+  speciality: Speciality;
   public: boolean;
   currentWaitTime: number;
   nextWaitTime: number;
@@ -32,14 +32,12 @@ export enum Profile {
   transportCommun = "driving-hgv"
 }
 
-// Specialty filter mapping for API param to hospital specialty string
-export const SPECIALTY_MAP: Record<string, string> = {
+// Speciality filter mapping for API param to hospital speciality string
+export const SPECIALITY_MAP: Record<string, string> = {
   adulte: "Urgences générales Adulte",
   enfant: "Urgences générales Enfants",
   ophtalmologie: "Urgences ophtalmologie",
   autre: "Pas de spécialité"
 };
-
-// Removed deprecated code and legacy exports. All specialty filtering is now handled via the 'specialty' param and SPECIALTY_MAP.
 
 export default {}

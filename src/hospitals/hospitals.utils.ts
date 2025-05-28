@@ -77,6 +77,6 @@ export function paginateHospitals<T>(hospitals: T[], page: number, limit: number
     };
 }
 
-// filterHospitalsByEmergency has been removed in favor of filterHospitalsBySpecialty in the controller. All filtering by emergency/specialty is now handled in the controller only.
+// filterHospitalsByEmergency has been removed in favor of filterHospitalsBySpeciality in the controller. All filtering by emergency/speciality is now handled in the controller only.
 
 export default {}

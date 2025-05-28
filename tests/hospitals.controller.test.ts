@@ -20,7 +20,7 @@ describe('Hospitals Controller', () => {
         name: `Hospital ${i + 1}`,
         position: { latitude: 48.85 + i * 0.01, longitude: 2.35 + i * 0.01 },
         address: `Address ${i + 1}`,
-        specialty:
+        speciality:
         i % 4 === 0
         ? Speciality['Urgences générales Adulte']
         : i % 4 === 1
@@ -86,7 +86,7 @@ describe('Hospitals Controller', () => {
             },
         });
         const body = JSON.parse(response.body);
-        expect(body.hospitals.every((h: any) => h.specialty === Speciality['Urgences générales Adulte'])).toBe(true);
+        expect(body.hospitals.every((h: any) => h.speciality === Speciality['Urgences générales Adulte'])).toBe(true);
     });
     
     it('uses OpenRouteService MATRIX API to get travel times', async () => {
@@ -148,7 +148,7 @@ describe('Hospitals Controller', () => {
         expect(hospital).toHaveProperty('name');
         expect(hospital).toHaveProperty('position');
         expect(hospital).toHaveProperty('address');
-        expect(hospital).toHaveProperty('specialty');
+        expect(hospital).toHaveProperty('speciality');
         expect(hospital).toHaveProperty('public');
         expect(hospital).toHaveProperty('currentWaitTime');
         expect(hospital).toHaveProperty('nextWaitTime');

@@ -20,7 +20,7 @@ async function listHostpitals(): Promise<HospitalsData> {
             name: hp.name,
             position: pos,
             address: hp.address,
-            specialty: hp.speciality as Speciality,
+            speciality: hp.speciality as Speciality,
             public: Boolean(hp.type),
             currentWaitTime: 0,
             nextWaitTime: 0,

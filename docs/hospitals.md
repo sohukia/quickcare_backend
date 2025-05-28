@@ -24,10 +24,10 @@ Returns a paginated and scored list of all hospitals.
 ---
 
 ### 2. `GET /api/hospitals/:emergency`
-Returns a paginated and scored list of hospitals filtered by emergency type (specialty).
+Returns a paginated and scored list of hospitals filtered by emergency type (speciality).
 
 **Path Parameters:**
-- `emergency`: The emergency type or specialty (e.g., `cardiology`, `trauma`, `general`).
+- `emergency`: The emergency type or speciality (e.g., `cardiology`, `trauma`, `general`).
 
 **Query Parameters:**
 - `page` (optional)
@@ -56,7 +56,7 @@ Array of hospitals matching the query, sorted by score.
 
 - **Sorting:** Hospitals are scored based on wait time, travel time, public/private status, and number of specialties.
 - **Pagination:** Results can be paginated using `page` and `limit` query parameters.
-- **Filtering:** Filter hospitals by emergency type (specialty).
+- **Filtering:** Filter hospitals by emergency type (speciality).
 - **Formatting:** Utility to format travel time from milliseconds to `h m s` format.
 
 ---
