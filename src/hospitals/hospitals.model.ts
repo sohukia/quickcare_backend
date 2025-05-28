@@ -16,7 +16,6 @@ export interface Hospital {
   position: Position;
   address: string;
   speciality: Speciality;
-  public: boolean;
   currentWaitTime: number;
   nextWaitTime: number;
   travelTime: number;

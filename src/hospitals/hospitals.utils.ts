@@ -44,9 +44,8 @@ export function sortHospitalsByDistance<T extends { position: { latitude: number
 function computeHospitalScore(
     waitingTime: number,
     travelTime: number,
-    isPublic: boolean,
 ): number {
-    return 1 / (waitingTime + travelTime) * (1 + (isPublic ? 1 : 0));
+    return 1 / (waitingTime + travelTime);
 }
 
 /**
@@ -56,8 +55,7 @@ export function sortHospitalsByScore(hospitals: Hospital[]): (Hospital & { score
     const hospitalsWithScore = hospitals.map((hospital) => {
         const score = computeHospitalScore(
             hospital.currentWaitTime,
-            hospital.travelTime,
-            hospital.public,
+            hospital.travelTime
         );
         return { ...hospital, score };
     });
