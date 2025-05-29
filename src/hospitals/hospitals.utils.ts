@@ -1,7 +1,7 @@
 // Utility functions for hospitals module
 // src/hospitals/hospitals.utils.ts
 
-import { Hospital } from "./hospitals.model";
+import { Hospital } from "./hospitals.model.js";
 
 /**
  * Computes the Haversine distance (in meters) between two positions.

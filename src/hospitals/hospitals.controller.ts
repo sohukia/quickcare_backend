@@ -1,8 +1,8 @@
 import { FastifyRequest, FastifyReply } from "fastify";
-import { sortHospitalsByScore, paginateHospitals, sortHospitalsByDistance } from "./hospitals.utils";
-import fetchHospitalsData from "../fetching/fetching.PE";
-import { LatLng } from "../fetching/fetching.ORS.model";
-import { Profile, SPECIALITY_MAP } from "./hospitals.model";
+import { sortHospitalsByScore, paginateHospitals, sortHospitalsByDistance } from "./hospitals.utils.js";
+import fetchHospitalsData from "../fetching/fetching.PE.js";
+import { LatLng } from "../fetching/fetching.ORS.model.js";
+import { Profile, SPECIALITY_MAP } from "./hospitals.model.js";
 
 interface HospitalsQuery {
     page?: string;
