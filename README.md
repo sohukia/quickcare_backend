@@ -134,3 +134,57 @@ Contributions are welcome! Please follow these steps:
 ## Support
 
 For any issues or questions, please open an issue in the repository or contact the maintainers.
+
+## Deployment with PM2
+
+To deploy the backend in production using pm2 and environment variables:
+
+1. **Build the project:**
+   ```powershell
+   pnpm run build
+   ```
+
+2. **Configure environment variables:**
+   - Create a `.env` file in the project root (do not commit this file).
+   - Add your secrets and configuration, for example:
+     ```env
+     OPENROUTESERVICE_API_KEY=your_secret_key
+     OPENROUTESERVICE_API_URL=https://api.openrouteservice.org/v2/matrix
+     PREDICTIF_EMERGENCY_DEPTS=...
+     PREDICTIF_EMERGENCY_INFLUXES=...
+     ```
+   - The application will automatically load variables from `.env` using `dotenv`.
+
+3. **(Optional) Use pm2 ecosystem file:**
+   - The provided `ecosystem.config.js` allows you to manage environment variables and pm2 settings.
+   - Example content:
+     ```js
+     module.exports = {
+         apps: [
+             {
+                 name: "quickare_backend",
+                 script: "dist/index.js",
+                 env: {
+                     NODE_ENV: "production",
+                     PORT: 4990,
+                 },
+                 env_production: {
+                     NODE_ENV: "production"
+                 }
+             }
+         ]
+     }
+     ```
+
+4. **Start the server with pm2:**
+   ```powershell
+   pm2 start ecosystem.config.js
+   ```
+
+5. **(Optional) Save and auto-start pm2 on boot:**
+   ```powershell
+   pm2 save
+   pm2 startup
+   ```
+
+This setup ensures your environment variables are secure and not hardcoded, and your backend will run reliably in production.
