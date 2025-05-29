@@ -1,7 +1,9 @@
 import Fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
-import { hospitalsRoutes } from "./hospitals";
-import "./config";
+import { hospitalsRoutes } from "./hospitals/hospitals.routes.js";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 /**
  * Create and configure the Fastify server instance.

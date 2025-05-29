@@ -1,6 +1,6 @@
-import { Speciality, Hospital, HospitalsData, Position, Profile } from '../hospitals/hospitals.model';
-import { fetchTravelTimes } from './fetching.ORS';
-import { LatLng } from './fetching.ORS.model';
+import { Speciality, Hospital, HospitalsData, Position, Profile } from '../hospitals/hospitals.model.js';
+import { fetchTravelTimes } from './fetching.ORS.js';
+import { LatLng } from './fetching.ORS.model.js';
 
 async function listHostpitals(): Promise<HospitalsData> {
     const data = await fetch(String(process.env.PREDICTIF_EMERGENCY_DEPTS));

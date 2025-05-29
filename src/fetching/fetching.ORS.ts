@@ -1,5 +1,5 @@
-import { LatLng } from "./fetching.ORS.model";
-import { Profile } from "../hospitals/hospitals.model";
+import { LatLng } from "./fetching.ORS.model.js";
+import { Profile } from "../hospitals/hospitals.model.js";
 
 export async function fetchTravelTimes(
     start: LatLng,
