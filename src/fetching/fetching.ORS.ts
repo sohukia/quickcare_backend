@@ -11,8 +11,9 @@ export async function fetchTravelTimes(
     const locations = [start, ...destinations].map(pos => [pos.longitude, pos.latitude]);
     const body = {
         "locations": locations,
-        "sources": [0]
+        "sources": [0],
     };
+    console.log(`Fetching travel times from ${endpoint} for profile ${profile}`);
     const response = await fetch(`${endpoint}/${profile}`, {
         method: "POST",
         headers: { 

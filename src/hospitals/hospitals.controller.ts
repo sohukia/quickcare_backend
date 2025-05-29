@@ -13,7 +13,12 @@ interface HospitalsQuery {
  * Parses the profile parameter, defaults to vehiculePersonnel if invalid.
  */
 function parseProfile(profileParam: unknown): Profile {
-    if (profileParam && Object.values(Profile).includes(profileParam as Profile)) {
+    if (!profileParam) return Profile.vehiculePersonnel;
+    // Accept both enum key (e.g. 'aPied') and value (e.g. 'foot-walking')
+    if (Object.keys(Profile).includes(profileParam as string)) {
+        return Profile[profileParam as keyof typeof Profile];
+    }
+    if (Object.values(Profile).includes(profileParam as Profile)) {
         return profileParam as Profile;
     }
     return Profile.vehiculePersonnel;

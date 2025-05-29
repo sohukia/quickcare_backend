@@ -14,7 +14,6 @@ async function listHostpitals(): Promise<HospitalsData> {
             latitude: hp.latitude,
             longitude: hp.longitude
         };
-        console.log(hp.name, "is public: ", hp.type == 0 ? false : true);
 
         let hospital: Hospital = {
             id: hp.id,
